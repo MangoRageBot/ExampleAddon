@@ -1,0 +1,57 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+        maven {
+            url = 'https://s01.oss.sonatype.org/content/repositories/releases/'
+        }
+        maven {
+            url = 'https://repo.mattmalec.com/repository/releases'
+        }
+    }
+
+    dependencies {
+        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
+        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2060'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'gradleutils'
+
+group = 'org.mangorage'
+version = '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://s01.oss.sonatype.org/content/repositories/releases/'
+    }
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    installer('io.github.realmangorage:installer:2.0.1')
+    bot('io.github.realmangorage:mangobot:1.0.0-c320')
+
+    implementation 'io.github.realmangorage:mangobot:1.0.0-c320'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task copyJar(type: Copy, dependsOn: jar) {
+    from jar.archiveFile // Use the output JAR file from the standard jar task
+    into file("build/run/plugins")
+    rename {
+        "plugin.jar"
+    }
+}
