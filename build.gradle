@@ -16,7 +16,7 @@ buildscript {
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2060'
+        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2068'
     }
 }
 
@@ -46,12 +46,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-}
-
-task copyJar(type: Copy, dependsOn: jar) {
-    from jar.archiveFile // Use the output JAR file from the standard jar task
-    into file("build/run/plugins")
-    rename {
-        "plugin.jar"
-    }
 }
