@@ -16,7 +16,7 @@ buildscript {
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2084'
+        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2089'
     }
 }
 
@@ -32,6 +32,15 @@ repositories {
     maven {
         url = 'https://s01.oss.sonatype.org/content/repositories/releases/'
     }
+    maven {
+        url = 'https://s01.oss.sonatype.org/content/repositories/releases/'
+    }
+    maven {
+        url 'https://m2.dv8tion.net/releases'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -39,7 +48,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     installer('io.github.realmangorage:installer:2.0.3')
-    bot('io.github.realmangorage:mangobot:1.0.0-c320')
+    bot('io.github.realmangorage:mangobot:1.0.0-c335')
 
     // Handle Libraries
     implementation('com.google.code.gson:gson:2.10.1')
@@ -53,5 +62,5 @@ test {
 MangoBotConfig {
     // shadowJar if you want to use a library that doesnt exist natively inside of MangoBot
     // Will eventually allow a way to add libraries without needing to use shadowJar...
-    setJarTask(shadowJar)
+    setJarTask(jar)
 }
