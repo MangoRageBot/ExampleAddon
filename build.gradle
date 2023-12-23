@@ -16,7 +16,7 @@ buildscript {
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2078'
+        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2082'
     }
 }
 
@@ -25,7 +25,6 @@ apply plugin: 'gradleutils'
 
 group = 'org.mangorage'
 version = '1.0-SNAPSHOT'
-
 
 repositories {
     mavenCentral()
@@ -41,9 +40,13 @@ dependencies {
     installer('io.github.realmangorage:installer:2.0.3')
     bot('io.github.realmangorage:mangobot:1.0.0-c320')
 
-    implementation 'io.github.realmangorage:mangobot:1.0.0-c320'
+    //implementation 'io.github.realmangorage:mangobot:1.0.0-c320'
 }
 
 test {
     useJUnitPlatform()
+}
+
+MangoBotConfig {
+    setJarTask(jar)
 }
