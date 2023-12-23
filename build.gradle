@@ -16,10 +16,11 @@ buildscript {
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2082'
+        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2083'
     }
 }
 
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 apply plugin: 'gradleutils'
 
@@ -40,7 +41,9 @@ dependencies {
     installer('io.github.realmangorage:installer:2.0.3')
     bot('io.github.realmangorage:mangobot:1.0.0-c320')
 
-    //implementation 'io.github.realmangorage:mangobot:1.0.0-c320'
+    // Handle Libraries
+    implementation('com.google.code.gson:gson:2.10.1')
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4')
 }
 
 test {
@@ -48,5 +51,7 @@ test {
 }
 
 MangoBotConfig {
-    setJarTask(jar)
+    // shadowJar if you want to use a library that doesnt exist natively inside of MangoBot
+    // Will eventually allow a way to add libraries without needing to use shadowJar...
+    setJarTask(shadowJar)
 }
