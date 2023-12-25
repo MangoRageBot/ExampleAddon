@@ -16,7 +16,7 @@ buildscript {
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2089'
+        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2094'
     }
 }
 
@@ -47,8 +47,8 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    installer('io.github.realmangorage:installer:2.0.3')
-    bot('io.github.realmangorage:mangobot:1.0.0-c335')
+    installer('io.github.realmangorage:installer:2.1.1')
+    bot('io.github.realmangorage:mangobot:1.0.0-c339')
 
     // Handle Libraries
     implementation('com.google.code.gson:gson:2.10.1')
