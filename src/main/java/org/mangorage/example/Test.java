@@ -1,5 +1,6 @@
 package org.mangorage.example;
 
+import joptsimple.OptionParser;
 import org.mangorage.mangobotapi.core.plugin.PluginManager;
 import org.mangorage.mangobotapi.core.plugin.api.AddonPlugin;
 import org.mangorage.mangobotapi.core.plugin.api.CorePlugin;
@@ -10,5 +11,6 @@ public class Test extends AddonPlugin {
     public Test() {
         super("test");
         PluginManager.getPlugin("mangobot", CorePlugin.class).getCommandRegistry().addBasicCommand(new TestCommand());
+        OptionParser parser = new OptionParser();
     }
 }
