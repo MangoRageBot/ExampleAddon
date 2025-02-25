@@ -1,0 +1,16 @@
+{
+  "id": "exampleaddon",
+  "name": "ExampleAddon",
+  "type": "Addon",
+  "version": "${mangobot_version}",
+  "dependencies": [
+    {
+      "id": "mangobotcore",
+      "type": "REQUIRED"
+    },
+    {
+      "id": "mangobot",
+      "type": "OPTIONAL"
+    }
+  ]
+}

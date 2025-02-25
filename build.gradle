@@ -12,21 +12,34 @@ buildscript {
         maven {
             url = 'https://repo.mattmalec.com/repository/releases'
         }
+        maven {
+            url = "https://maven.minecraftforge.net/"
+        }
     }
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'io.github.realmangorage:gradleutils:3.0.2-beta2106'
+        classpath 'org.mangorage:MangoBotGradle:5.0.4'
     }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
-apply plugin: 'gradleutils'
+apply plugin: 'MangoBotGradle'
 apply plugin: 'maven-publish'
 
 group = 'org.mangorage'
-version = '1.0'
+version = '1.0.0'
+
+println("Version: " + version)
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += "--enable-preview"
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs += "--enable-preview"
+}
 
 repositories {
     mavenCentral()
@@ -42,6 +55,9 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    maven {
+        url = "https://maven.minecraftforge.net/"
+    }
 }
 
 dependencies {
@@ -49,15 +65,14 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // Required
-    installer('io.github.realmangorage:installer:2.2.0')
-    bot('io.github.realmangorage:mangobot:1.0.346')
+    installer('org.mangorage:installer:4.0.3')
+    bot('org.mangorage:mangobot:11.0.23')
 
     // Optional
-    plugin('io.github.realmangorage:mangobotplugin:1.0.9')
+    plugin('org.mangorage:mangobotplugin:11.1.9')
 
-    embedLibrary('org.kohsuke:github-api:1.123') {
-        transitive = false
-    }
+    // library('com.example:example-artifact:version') // Gets put into dependencies.json
+    // embedLibrary('com.example:example-artifact:version') // Doesn't get put into dependencies.json
 
 }
 
@@ -73,20 +88,28 @@ shadowJar {
     configurations = [project.getConfigurations().findByName('embedLibrary')]
 }
 
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            mangobot_version: version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['example.plugin.json']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
 publishing {
     publications.register("mangobotaddon", MavenPublication) {
         artifact jar
 
-        groupId = 'io.github.realmangorage'
-        artifactId = 'mangobotaddon'
-
         pom {
-            name = 'MangoBot addon'
-            description = 'An Example Addon for MangoBot'
-            url = 'https://github.com/MangoRageBot/MangoBot'
+            name = 'MangoBot Example Addon Plugin'
+            description = 'The Example Addon Template for MangoBot'
+            url = 'https://github.com/MangoRageBot/ExampleAddon'
             issueManagement {
                 system = 'github'
-                url = 'https://github.com/MangoRageBot/MangoBot/issues'
+                url = 'https://github.com/MangoRageBot/ExampleAddon/issues'
             }
             developers {
                 developer {
@@ -99,13 +122,11 @@ publishing {
 
     repositories {
         maven {
-            def releasesRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/releases/'
-            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-            group "io.github.mangorage"
+            url = "https://maven.minecraftforge.net/"
+
             credentials {
-                username = findProperty("mango.maven.username")
-                password = findProperty("mango.maven.password")
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
             }
         }
     }
