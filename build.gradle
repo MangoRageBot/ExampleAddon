@@ -1,7 +1,5 @@
 buildscript {
     repositories {
-        mavenLocal()
-        mavenCentral()
         gradlePluginPortal()
         maven {
             url = "https://maven.minecraftforge.net/"
@@ -39,7 +37,6 @@ java {
 }
 
 repositories {
-    mavenCentral()
     maven {
         url = "https://maven.minecraftforge.net/"
     }
@@ -59,10 +56,6 @@ dependencies {
     // library('com.example:example-artifact:version') // Gets put into dependencies.json
     // embedLibrary('com.example:example-artifact:version') // Doesn't get put into dependencies.json
 
-}
-
-test {
-    useJUnitPlatform()
 }
 
 MangoBotConfig {
