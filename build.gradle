@@ -41,6 +41,12 @@ tasks.withType(JavaExec) {
     jvmArgs += "--enable-preview"
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(22))
+    }
+}
+
 repositories {
     mavenCentral()
     maven {
