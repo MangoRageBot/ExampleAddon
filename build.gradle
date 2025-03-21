@@ -51,7 +51,7 @@ dependencies {
     bot('org.mangorage:mangobot:11.0.23')
 
     // Optional
-    plugin('org.mangorage:mangobotplugin:11.1.9')
+    plugin('org.mangorage:mangobotplugin:11.1.31')
 
     // library('com.example:example-artifact:version') // Gets put into dependencies.json
     // embedLibrary('com.example:example-artifact:version') // Doesn't get put into dependencies.json
