@@ -47,7 +47,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // Required
-    installer('org.mangorage:installer:4.0.3')
+    installer('org.mangorage:installer:4.0.9')
     bot('org.mangorage:mangobot:11.0.23')
 
     // Optional
