@@ -48,7 +48,7 @@ dependencies {
 
     // Required
     installer('org.mangorage:installer:4.0.3')
-    bot('org.mangorage:mangobot:11.0.23')
+    bot('org.mangorage:mangobot:12.0.22')
 
     // Optional
     plugin('org.mangorage:mangobotplugin:11.1.9')
