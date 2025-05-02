@@ -8,7 +8,7 @@ buildscript {
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'org.mangorage:MangoBotGradle:5.0.4'
+        classpath 'org.mangorage:MangoBotGradle:6.0.9'
     }
 }
 
