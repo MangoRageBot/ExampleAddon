@@ -1,19 +1,29 @@
 package org.mangorage.example;
 
-import org.mangorage.mangobotapi.core.plugin.AbstractPlugin;
-import org.mangorage.mangobotapi.core.plugin.PluginManager;
-import org.mangorage.mangobotapi.core.plugin.impl.Plugin;
+import org.mangorage.mangobotcore.plugin.api.MangoBotPlugin;
+import org.mangorage.mangobotcore.plugin.api.Plugin;
+import org.mangorage.mangobotcore.plugin.api.PluginManager;
 
-@Plugin(id = "exampleaddon")
-public class ExampleAddon extends AbstractPlugin {
+/**
+ * An Example of your Addon/Plugin Class...
+ */
+@MangoBotPlugin(id = ExampleAddon.ID)
+public class ExampleAddon implements Plugin {
+    public static final String ID = "exampleaddon";
 
     public ExampleAddon() {
-
+        System.out.println("Example Addon Ctor loaded...");
     }
 
     @Override
-    protected void init() {
-        if (PluginManager.isLoaded("mangobot")) {
+    public String getId() {
+        return ID;
+    }
+
+    @Override
+    public void load() {
+        var pl = PluginManager.getInstance().getPlugin("mangobot");
+        if (pl != null) {
             TestCommand.load();
         }
     }

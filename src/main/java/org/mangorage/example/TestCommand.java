@@ -1,26 +1,43 @@
 package org.mangorage.example;
 
-import net.dv8tion.jda.api.entities.Message;
-import org.mangorage.mangobot.MangoBotPlugin;
-import org.mangorage.mangobotapi.core.commands.Arguments;
-import org.mangorage.mangobotapi.core.commands.CommandResult;
-import org.mangorage.mangobotapi.core.commands.IBasicCommand;
-import org.mangorage.mangobotapi.core.plugin.PluginManager;
 
-public class TestCommand implements IBasicCommand {
+import net.dv8tion.jda.api.entities.Message;
+import org.mangorage.commonutils.misc.Arguments;
+import org.mangorage.mangobotcore.jda.command.api.CommandResult;
+import org.mangorage.mangobotcore.jda.command.api.ICommand;
+
+import org.mangorage.mangobotcore.plugin.api.PluginManager;
+import org.mangorage.mangobotplugin.entrypoint.MangoBot;
+
+import java.util.List;
+
+/**
+ * An example of how you can make a command!
+ */
+public class TestCommand implements ICommand {
     public static void load() {
-        MangoBotPlugin plugin = PluginManager.getPlugin("mangobot", MangoBotPlugin.class);
-        plugin.getCommandRegistry().addBasicCommand(new TestCommand());
+        MangoBot plugin = PluginManager.getInstance().getPlugin(("mangobot")).getInstance(MangoBot.class);
+        plugin.getCommandManager().register(new TestCommand());
+    }
+
+    @Override
+    public String id() {
+        return "examplecmd";
+    }
+
+    @Override
+    public List<String> commands() {
+        return List.of(id());
+    }
+
+    @Override
+    public String usage() {
+        return "Test Command Usage: N/A";
     }
 
     @Override
     public CommandResult execute(Message message, Arguments arguments) {
         message.reply("Addon Worked!").queue();
         return CommandResult.PASS;
-    }
-
-    @Override
-    public String commandId() {
-        return "addonTest";
     }
 }

@@ -8,7 +8,7 @@ buildscript {
 
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'org.mangorage:MangoBotGradle:5.0.4'
+        classpath 'org.mangorage:MangoBotGradle:6.0.10'
     }
 }
 
@@ -22,12 +22,14 @@ version = '1.0.0'
 
 println("Version: " + version)
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs += "--enable-preview"
-}
+// Your runConfigs...
+MangoBotConfig {
+    setJarTask jar
 
-tasks.withType(JavaExec) {
-    jvmArgs += "--enable-preview"
+    addRunConfig {
+        it.setName "runDevBot"
+        it.addArgs "--dev"
+    }
 }
 
 java {
@@ -37,8 +39,18 @@ java {
 }
 
 repositories {
+    mavenCentral()
     maven {
         url = "https://maven.minecraftforge.net/"
+    }
+    maven {
+        url 'https://m2.dv8tion.net/releases'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url "https://maven.lavalink.dev/releases/"
     }
 }
 
@@ -47,23 +59,27 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // Required
-    installer('org.mangorage:installer:4.0.3')
-    bot('org.mangorage:mangobot:11.0.23')
+    installer('org.mangorage:installer:4.0.15')
+    bootstrap("org.mangorage:mangobotbootstrap:1.0.18")
+
+    plugin('org.mangorage:mangobot:12.0.52')
 
     // Optional
-    plugin('org.mangorage:mangobotplugin:11.1.9')
+    plugin('org.mangorage:mangobotplugin:12.0.25')
 
     // library('com.example:example-artifact:version') // Gets put into dependencies.json
     // embedLibrary('com.example:example-artifact:version') // Doesn't get put into dependencies.json
+}
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    useJUnitPlatform()
 }
 
 MangoBotConfig {
     setJarTask(jar)
-}
-
-shadowJar {
-    configurations = [project.getConfigurations().findByName('embedLibrary')]
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -77,9 +93,34 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+jar {
+    dependsOn configurations.embedLibrary
+
+    from {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        configurations.embedLibrary.collect {
+            zipTree(it)
+        }
+    } {
+        exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    setArchiveClassifier('sources')
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
 publishing {
     publications.register("mangobotaddon", MavenPublication) {
         artifact jar
+        artifact sourcesJar
+        artifact javadocJar
 
         pom {
             name = 'MangoBot Example Addon Plugin'
@@ -93,6 +134,15 @@ publishing {
                 developer {
                     id = 'mangorage'
                     name = 'MangoRage'
+                }
+            }
+            withXml {
+                def dependencies = asNode().appendNode('dependencies')
+                configurations.library.getDependencies().each {
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', it.group)
+                    dependency.appendNode('artifactId', it.name)
+                    dependency.appendNode('version', it.version)
                 }
             }
         }
